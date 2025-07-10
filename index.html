@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>TKQ</title>    
+
+    <!-- Bootstrap core CSS -->
+	<link href="./libs/bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="passation.css" rel="stylesheet">
+  </head>
+  <body>
+  
+	<nav class="navbar navbar-dark bg-dark navbar-expand-md ">
+		<!-- Navbar content -->
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">TKQ</a>
+			<button id="mobileMenu" class="navbar-toggler mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav nav-pills">
+					<li class="nav-item">
+						<a id="menu_passation" href="passation" class="nav-link active px-3" aria-current="page" onClick="collapseMenu()">Passation</a>
+					</li>
+					<li class="nav-item">
+						<a id="menu_info" href="info" class="nav-link px-3" onClick="collapseMenu()">En savoir plus</a>
+					</li>
+					<li class="nav-item">
+						<a id="menu_bd" href="bd" class="nav-link px-3" onClick="collapseMenu()">Base de données</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+				
+	<div id="passation" class="d-flex flex-column p-2">
+		<button type="button" class="btn btn-primary mb-3" onclick="newTest()">Nouvelle passation</button>
+		<form id="form" class="d-none">
+			<div class="input-group mb-3">
+				<span class="input-group-text">Code expérimentateur</span>
+				<input id="codeXP" type="text" class="form-control" placeholder="">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">Date de passation</span>
+				<input id="datePassation" type="date" class="form-control" placeholder="">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">Code enfant</span>
+				<input id="codeEnfant" type="text" class="form-control" placeholder="">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">Date de naissance enfant</span>
+				<input id="dateNaissance" type="date" class="form-control" placeholder="">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">Informations complémentaires</span>
+			</div>
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" id="InfoCompTV" onclick="disableNotTV(this)">
+				<label class="form-check-label" for="InfoCompTV">SDA (Sans Difficulté Apparente)</label>
+			</div>
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" subset="notTV" id="InfoCompULIS" onclick="disableTV(this)">
+				<label class="form-check-label" for="InfoCompULIS">ULIS</label>
+			</div>
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" subset="notTV" id="InfoCompDYS" onclick="disableTV(this)">
+				<label class="form-check-label" for="InfoCompDYS">DYS</label>
+			</div>
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" subset="notTV" id="InfoCompTSA" onclick="disableTV(this)">
+				<label class="form-check-label" for="InfoCompTSA">TSA</label>
+			</div>
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" subset="notTV" id="InfoCompTDAH" onclick="disableTV(this)">
+				<label class="form-check-label" for="InfoCompTDAH">TDAH</label>
+			</div>
+			
+			<h1>Consignes de passation</h1>
+			
+			<p>Répétez toujours deux fois les questions. Noter tout ce que dit l'enfant. Lui demander régulièrement son attention ("écoute moi bien").</p>
+			
+			<p>N'hésitez pas à consulter la notice pratique de l'application&nbsp;: <a href="NotesPratiquesV2.pdf" target="_blank">NotesPratiqueV2.pdf</a></p>
+			
+			<button id="btnStart" type="button" class="btn btn-primary mb-3" onclick="startTest()">Commencer le test</button>
+			
+			<div id="TKQContent" class="d-none">
+			
+				<p><b>Je vais te poser un certain nombre de questions. Ecoute bien ce que je te dis. Essaye de me donner la bonne réponse, tu n'es pas pressé pour répondre.</b></p>
+				
+				<h1>Mesure du temps conventionnel</h1>
+				
+				<h2>Orientation (OR), 5 items</h2>
+				
+				<label class="form-label">Quel jour sommes-nous aujourd'hui&nbsp;?</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">OR1.</span>
+					<input type="radio" class="btn-check" name="OR1-outlined" id="OR1-success-outlined" set="S1" subset="OR" autocomplete="off">
+					<label class="btn btn-outline-success" for="OR1-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="OR1-outlined" id="OR1-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="OR1-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="OR1-outlined" id="OR1-secondary-outlined" subset="OR_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="OR1-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="OR1-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<label class="form-label">A ton avis, quelle heure est-il à peu près, sans regarder ta montre si tu en as une&nbsp;? (<i>Correct si l’enfant fournit une réponse correspondant à un horaire inclus dans la même demi-journée. Par exemple, l’enfant répond : il est 10h du matin, quand il est midi</i>)</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">OR2.</span>
+					<input type="radio" class="btn-check" name="OR2-outlined" id="OR2-success-outlined" set="S1" subset="OR" autocomplete="off">
+					<label class="btn btn-outline-success" for="OR2-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="OR2-outlined" id="OR2-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="OR2-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="OR2-outlined" id="OR2-secondary-outlined" subset="OR_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="OR2-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="OR2-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<label class="form-label">Quel mois sommes-nous&nbsp;?</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">OR3. </span>
+					<input type="radio" class="btn-check" name="OR3-outlined" id="OR3-success-outlined" set="S1" subset="OR" autocomplete="off">
+					<label class="btn btn-outline-success" for="OR3-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="OR3-outlined" id="OR3-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="OR3-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="OR3-outlined" id="OR3-secondary-outlined" subset="OR_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="OR3-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="OR3-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<label class="form-label">En quelle année sommes-nous&nbsp;?</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">OR4. </span>
+					<input type="radio" class="btn-check" name="OR4-outlined" id="OR4-success-outlined" set="S1" subset="OR" autocomplete="off">
+					<label class="btn btn-outline-success" for="OR4-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="OR4-outlined" id="OR4-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="OR4-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="OR4-outlined" id="OR4-secondary-outlined" subset="OR_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="OR4-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="OR4-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<label class="form-label">En quelle saison sommes-nous&nbsp;? (<i>ne pas définir "saison"</i>)</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">OR5. </span>
+					<input type="radio" class="btn-check" name="OR5-outlined" id="OR5-success-outlined" set="S1" subset="OR" autocomplete="off">
+					<label class="btn btn-outline-success" for="OR5-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="OR5-outlined" id="OR5-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="OR5-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="OR5-outlined" id="OR5-secondary-outlined" subset="OR_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="OR5-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="OR5-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<h2>Sequence (SEQ), 3 items</h2>
+				
+				<label class="form-label">Quel mois vient après le mois de Mars&nbsp;?</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">SEQ1. </span>
+					<input type="radio" class="btn-check" name="SEQ1-outlined" id="SEQ1-success-outlined" set="S1" subset="SEQ" autocomplete="off">
+					<label class="btn btn-outline-success" for="SEQ1-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="SEQ1-outlined" id="SEQ1-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="SEQ1-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="SEQ1-outlined" id="SEQ1-secondary-outlined" subset="SEQ_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="SEQ1-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="SEQ1-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<label class="form-label">Donne-moi dans l'ordre les mois de l'année. (<i>Correct quel que soit le premier mois énoncé</i>)</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">SEQ2. </span>
+					<input type="radio" class="btn-check" name="SEQ2-outlined" id="SEQ2-success-outlined" set="S1" subset="SEQ" autocomplete="off">
+					<label class="btn btn-outline-success" for="SEQ2-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="SEQ2-outlined" id="SEQ2-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="SEQ2-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="SEQ2-outlined" id="SEQ2-secondary-outlined" subset="SEQ_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="SEQ2-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="SEQ2-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<label class="form-label">Donne-moi dans l'ordre les saisons de l'année. (<i>Correct quelle que soit la première saison énoncée</i>)</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">SEQ3. </span>
+					<input type="radio" class="btn-check" name="SEQ3-outlined" id="SEQ3-success-outlined" set="S1" subset="SEQ" autocomplete="off">
+					<label class="btn btn-outline-success" for="SEQ3-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="SEQ3-outlined" id="SEQ3-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="SEQ3-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="SEQ3-outlined" id="SEQ3-secondary-outlined" subset="SEQ_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="SEQ3-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="SEQ3-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<h2>Time Unit (TU), 4 items</h2>
+				
+				<label class="form-label">Une minute, c'est plus court ou plus long qu'une seconde&nbsp;?</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">TU1. </span>
+					<input type="radio" class="btn-check" name="TU1-outlined" id="TU1-success-outlined" set="S1" subset="TU" autocomplete="off">
+					<label class="btn btn-outline-success" for="TU1-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="TU1-outlined" id="TU1-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="TU1-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="TU1-outlined" id="TU1-secondary-outlined" subset="TU_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="TU1-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="TU1-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<label class="form-label">Une semaine, c'est plus long ou plus court qu'un mois&nbsp;?</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">TU2. </span>
+					<input type="radio" class="btn-check" name="TU2-outlined" id="TU2-success-outlined" set="S1" subset="TU" autocomplete="off">
+					<label class="btn btn-outline-success" for="TU2-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="TU2-outlined" id="TU2-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="TU2-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="TU2-outlined" id="TU2-secondary-outlined" subset="TU_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="TU2-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="TU2-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<label class="form-label">Un mois, c'est plus court ou plus long qu'une année&nbsp;?</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">TU3. </span>
+					<input type="radio" class="btn-check" name="TU3-outlined" id="TU3-success-outlined" set="S1" subset="TU" autocomplete="off">
+					<label class="btn btn-outline-success" for="TU3-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="TU3-outlined" id="TU3-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="TU3-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="TU3-outlined" id="TU3-secondary-outlined" subset="TU_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="TU3-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="TU3-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<label class="form-label">Il y a combien d'heures dans une journée, d'un matin au matin suivant&nbsp;? (<i>Correct si la réponse est 24h</i>)</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">TU4. </span>
+					<input type="radio" class="btn-check" name="TU4-outlined" id="TU4-success-outlined" set="S1" subset="TU" autocomplete="off">
+					<label class="btn btn-outline-success" for="TU4-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="TU4-outlined" id="TU4-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="TU4-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="TU4-outlined" id="TU4-secondary-outlined" subset="TU_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="TU4-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="TU4-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<h2>Clock knowledge (CLO), 5 items</h2>
+				
+				<div class="input-group mb-3">
+					<!-- Modal -->
+					<div class="modal fade" id="horlogesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-fullscreen">
+							<div class="modal-content">
+								<div class="modal-header">
+									<span name="modalText"></span>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<img src="Images/horloges.jpg" class="img-fluid position-absolute top-50 start-50 translate-middle" alt="horloge" width="500px">
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Revenir au questionnaire</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<label class="form-label" id="labelCLO1">Montre-moi l'horloge qui indique 2 h.</label> <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#horlogesModal" onclick="updateModalText('labelCLO1')">Afficher les horloges</button>
+				<div class="input-group mb-3">
+					<span class="input-group-text">CLO1. </span>
+					<input type="radio" class="btn-check" name="CLO1-outlined" id="CLO1-success-outlined" set="S1" subset="CLO" autocomplete="off">
+					<label class="btn btn-outline-success" for="CLO1-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="CLO1-outlined" id="CLO1-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="CLO1-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="CLO1-outlined" id="CLO1-secondary-outlined" subset="CLO_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="CLO1-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="CLO1-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+					
+				</div>
+				
+				<label class="form-label" id="labelCLO2">Montre-moi l'horloge qui indique 3 heures moins 10.</label> <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#horlogesModal" onclick="updateModalText('labelCLO2')">Afficher les horloges</button>
+				<div class="input-group mb-3">
+					<span class="input-group-text">CLO2. </span>
+					<input type="radio" class="btn-check" name="CLO2-outlined" id="CLO2-success-outlined" set="S1" subset="CLO" autocomplete="off">
+					<label class="btn btn-outline-success" for="CLO2-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="CLO2-outlined" id="CLO2-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="CLO2-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="CLO2-outlined" id="CLO2-secondary-outlined" subset="CLO_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="CLO2-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="CLO2-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<label class="form-label" id="labelCLO3">Montre-moi l'horloge qui indique 8 heures et quart.</label> <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#horlogesModal" onclick="updateModalText('labelCLO3')">Afficher les horloges</button>
+				<div class="input-group mb-3">
+					<span class="input-group-text">CLO3. </span>
+					<input type="radio" class="btn-check" name="CLO3-outlined" id="CLO3-success-outlined" set="S1" subset="CLO" autocomplete="off">
+					<label class="btn btn-outline-success" for="CLO3-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="CLO3-outlined" id="CLO3-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="CLO3-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="CLO3-outlined" id="CLO3-secondary-outlined" subset="CLO_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="CLO3-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="CLO3-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<label class="form-label" id="labelCLO4">Montre-moi l'horloge qui indique 11h10.</label> <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#horlogesModal" onclick="updateModalText('labelCLO4')">Afficher les horloges</button>
+				<div class="input-group mb-3">
+					<span class="input-group-text">CLO4. </span>
+					<input type="radio" class="btn-check" name="CLO4-outlined" id="CLO4-success-outlined" set="S1" subset="CLO" autocomplete="off">
+					<label class="btn btn-outline-success" for="CLO4-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="CLO4-outlined" id="CLO4-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="CLO4-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="CLO4-outlined" id="CLO4-secondary-outlined" subset="CLO_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="CLO4-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="CLO4-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<div class="input-group mb-3">
+					<!-- Modal -->
+					<div class="modal fade" id="horlogeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-fullscreen">
+							<div class="modal-content">
+								<div class="modal-header">
+									<span name="modalText"></span>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<img src="Images/horloge.jpg" class="img-fluid position-absolute top-50 start-50 translate-middle" alt="horloges" width="300px">
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Revenir au questionnaire</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<label class="form-label" id="labelCLO5">Regarde cette horloge. Il reste combien de minutes jusqu'à 2h&nbsp;?</label> <span>(<i>Correct si la réponse est 25 min</i>)</span> <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#horlogeModal" onclick="updateModalText('labelCLO5')">Afficher l'horloge</button>
+				<div class="input-group mb-3">
+					<span class="input-group-text">CLO5. </span>
+					<input type="radio" class="btn-check" name="CLO5-outlined" id="CLO5-success-outlined" set="S1" subset="CLO" autocomplete="off">
+					<label class="btn btn-outline-success" for="CLO5-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="CLO5-outlined" id="CLO5-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="CLO5-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="CLO5-outlined" id="CLO5-secondary-outlined" subset="CLO_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="CLO5-secondary-outlined">Ne sais pas</label>
+				</div>
+				
+				<label class="form-label" id="labelCLO5WHY">Indiquer le nombre de minutes donné par l'enfant et noter également la réponse à la question&nbsp;: Est-ce que tu peux me dire comment tu as trouvé le résultat&nbsp;?</label> <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#horlogeModal" onclick="updateModalText('labelCLO5WHY')">Afficher l'horloge</button>
+				<div class="input-group mb-3">
+					<span class="input-group-text">CLO5. (Précisions) </span>
+					<input id="CLO5-input" type="text" class="form-control" placeholder="" set="S1" subset="CLO">
+					<input type="checkbox" class="btn-check" name="CLO5WHY-outlined" id="CLO5WHY-secondary-outlined" subset="CLO_NSP" autocomplete="off" onclick="toggle(this, 'CLO5-input')">
+					<label class="btn btn-outline-secondary" for="CLO5WHY-secondary-outlined">Ne sais pas</label>
+				</div>
+				<div class="input-group">
+					<span class="input-group-text">Commentaires: </span>
+					<input id="CLO5-comment-content" type="text" class="form-control" placeholder="">
+				</div>
+				
+				<h1>Mesure de l'estimation temporelle</h1>
+				
+				<p><b>Je vais te poser des questions sur 4 images, regarde les bien.</b></p>
+				
+				<div class="input-group mb-3">
+					<!-- Modal -->
+					<div class="modal fade" id="personnagesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-fullscreen">
+							<div class="modal-content">
+								<div class="modal-header">
+									<span name="modalText"></span>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<img src="Images/personnages.jpg" class="img-fluid position-absolute top-50 start-50 translate-middle" alt="horloges" width="1000px">
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Revenir au questionnaire</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<label class="form-label" id="AGE1">Pour aller de l'âge de&nbsp;<b>bébé (pointer)</b>&nbsp;à l'âge d'<b>enfant (pointer)</b>, ça prend combien de temps&nbsp;?</label> <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#personnagesModal" onclick="updateModalText('AGE1')">Afficher les personnages</button>
+				<div class="input-group mb-3">
+					<span class="input-group-text">AGE1. </span>
+					<input id="AGE1-input" type="number" class="form-control" placeholder="" min="0" step=".01">
+					<span class="input-group-text">ans</span>
+					<input type="checkbox" class="btn-check" name="AGE1-outlined" id="AGE1-secondary-outlined" subset="AGE_NSP" autocomplete="off" onclick="toggle(this, 'AGE1-input')">
+					<label class="btn btn-outline-secondary" for="AGE1-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="AGE1-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<label class="form-label" id="AGE2">Pour aller de l'âge d'<b>enfant (pointer)</b>&nbsp;à l'âge de&nbsp;<b>jeune adulte (pointer)</b>, ça prend combien de temps&nbsp;?</label> <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#personnagesModal" onclick="updateModalText('AGE2')">Afficher les personnages</button>
+				<div class="input-group mb-3">
+					<span class="input-group-text">AGE2. </span>
+					<input id="AGE2-input" type="number" class="form-control" placeholder="" min="0" step=".01">
+					<span class="input-group-text">ans</span>
+					<input type="checkbox" class="btn-check" name="AGE2-outlined" id="AGE2-secondary-outlined" subset="AGE_NSP" autocomplete="off" onclick="toggle(this, 'AGE2-input')">
+					<label class="btn btn-outline-secondary" for="AGE2-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="AGE2-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<label class="form-label" id="AGE3">Pour aller de l'âge de&nbsp;<b>jeune adulte (pointer)</b>&nbsp;à l'âge de&nbsp;<b>vieux monsieur (pointer)</b>, ça prend combien de temps&nbsp;?</label> <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#personnagesModal" onclick="updateModalText('AGE3')">Afficher les personnages</button>
+				<div class="input-group mb-3">
+					<span class="input-group-text">AGE3. </span>
+					<input id="AGE3-input" type="number" class="form-control" placeholder="" min="0" step=".01">
+					<span class="input-group-text">ans</span>
+					<input type="checkbox" class="btn-check" name="AGE3-outlined" id="AGE3-secondary-outlined" subset="AGE_NSP" autocomplete="off" onclick="toggle(this, 'AGE3-input')">
+					<label class="btn btn-outline-secondary" for="AGE3-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="AGE3-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<p><b>Je vais encore te poser quelques questions.</b></p>
+				
+				<label class="form-label">Tu as quel âge&nbsp;?</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">CYC1. (non évalué)</span>
+				</div>
+				
+				<label class="form-label">C'est quand ton anniversaire&nbsp;? (<i>Dans cette question l'année de naissance ne doit pas être prise en compte. Seul le jour et le mois doivent être évalués. Si l'enfant ne sait pas, l'aider par rapport au mois&nbsp;: c'est quel mois&nbsp;? en été&nbsp;?</i>)</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">CYC2. </span>
+					<input type="radio" class="btn-check" name="CYC2-outlined" id="CYC2-success-outlined" set="S2" subset="CYC" autocomplete="off">
+					<label class="btn btn-outline-success" for="CYC2-success-outlined">Correct</label>
+					<input type="radio" class="btn-check" name="CYC2-outlined" id="CYC2-danger-outlined" autocomplete="off">
+					<label class="btn btn-outline-danger" for="CYC2-danger-outlined">Erreur</label>
+					<input type="radio" class="btn-check" name="CYC2-outlined" id="CYC2-secondary-outlined" subset="CYC_NSP" autocomplete="off">
+					<label class="btn btn-outline-secondary" for="CYC2-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="CYC2-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<label class="form-label">Combien de mois se sont passés depuis ton dernier anniversaire&nbsp;?</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">CYC3. </span>
+					<input id="CYC3-input" type="number" class="form-control" placeholder="" min="0" step=".01">
+					<span class="input-group-text">mois</span>
+					<input type="checkbox" class="btn-check" name="CYC3-outlined" id="CYC3-secondary-outlined" subset="CYC_NSP" autocomplete="off" onclick="toggle(this, 'CYC3-input')">
+					<label class="btn btn-outline-secondary" for="CYC3-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="CYC3-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<label class="form-label">Dans combien de mois tu auras ton anniversaire&nbsp;?</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">CYC4. </span>
+					<input id="CYC4-input" type="number" class="form-control" placeholder="" min="0" step=".01">
+					<span class="input-group-text">mois</span>
+					<input type="checkbox" class="btn-check" name="CYC4-outlined" id="CYC4-secondary-outlined" subset="CYC_NSP" autocomplete="off" onclick="toggle(this, 'CYC4-input')">
+					<label class="btn btn-outline-secondary" for="CYC4-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="CYC4-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<p><b>et maintenant la toute dernière question&nbsp;!!!!</b></p>
+				
+				<label class="form-label">Ca fait à peu près combien de temps qu'on est ensemble&nbsp;?</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text">CUR. </span>
+					<input id="CUR-input_h" type="number" class="form-control" placeholder="" min="0" step="1">
+					<span class="input-group-text">h.</span>
+					<input id="CUR-input_min" type="number" class="form-control" placeholder="" min="0" step="1">
+					<span class="input-group-text">min.</span>
+					<input type="checkbox" class="btn-check" name="CUR-outlined" id="CUR-secondary-outlined" subset="CUR_NSP" autocomplete="off" onclick="toggle(this, 'CUR-input_h', 'CUR-input_min')">
+					<label class="btn btn-outline-secondary" for="CUR-secondary-outlined">Ne sais pas</label>
+					<span class="input-group">
+						<span class="input-group-text">Commentaires: </span>
+						<input id="CUR-comment-content" type="text" class="form-control" placeholder="">
+					</span>
+				</div>
+				
+				<p>Un grand merci pour ta participation&nbsp;!!!!</p>
+				
+				<button type="button" class="btn btn-primary" onclick="computeScore()">Calculer scores</button>
+				
+				<div id="d-timer" class="position-fixed bottom-0 end-0 bg-info p-2 rounded" style="z-index:1040">
+					<button id="pauseBtn" type="button" class="btn btn-outline-dark p-0">
+						<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pause-circle" viewBox="-1 -1 18 18">
+							<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+							<path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5z"/>
+						</svg>
+					</button>
+					<button id="playBtn" type="button" class="btn btn-outline-dark p-0">
+						<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16">
+							<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+							<path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
+						</svg>
+					</button>
+				</div>
+			</div>
+			
+			<p>&nbsp;</p>
+		</form>
+			
+		<div id="results" class="d-none">
+			<h1>Résultats</h1>
+			<p class="mb-0">Score OR&nbsp;: <span id="scoreOR"></span>/5 (<span id="scoreOR_NSP"></span> "Ne sait pas")</p>
+			<p class="mb-0">Score SEQ&nbsp;: <span id="scoreSEQ"></span>/3 (<span id="scoreSEQ_NSP"></span> "Ne sait pas")</p>
+			<p class="mb-0">Score TU&nbsp;: <span id="scoreTU"></span>/4 (<span id="scoreTU_NSP"></span> "Ne sait pas")</p>
+			<p class="mb-0">Score CLO&nbsp;: <span id="scoreCLO"></span>/5 (<span id="scoreCLO_NSP"></span> "Ne sait pas")</p>
+			<p><strong>Score du temps conventionnel (S1)&nbsp;:</strong> <span id="scoreS1"></span>/17 (<span id="scoreS1_NSP"></span> "Ne sait pas")</p>
+			<p class="mb-0">Score AGE&nbsp;: <span id="scoreAGE"></span>/6 (<span id="scoreAGE_NSP"></span> "Ne sait pas")</p>
+			<p class="mb-0">Score CYC&nbsp;: <span id="scoreCYC"></span>/7 (<span id="scoreCYC_NSP"></span> "Ne sait pas")</p>
+			<p class="mb-0">Score CUR&nbsp;: <span id="scoreCUR"></span>/10 (<span id="scoreCUR_NSP"></span> "Ne sait pas")</p>
+			<p><strong>Score de l'estimation temporelle (S2)&nbsp;:</strong> <span id="scoreS2"></span>/23 (<span id="scoreS2_NSP"></span> "Ne sait pas")</p>
+			<p><strong>Score du TKQ&nbsp;:</strong> <span id="scoreTKQ"></span>/40 (<span id="scoreTKQ_NSP"></span> "Ne sait pas")</p>
+			
+			<div class="input-group mb-3">
+				<span class="input-group-text">Commentaires</span>
+				<textarea id="commentaire" type="text" class="form-control" placeholder="" aria-label="With textarea"></textarea>
+			</div>
+			
+			<button type="button" class="btn btn-primary" onclick="savePassation()"><span id="saveUpdate" >Enregistrer</span> passation et résultats</button>
+			
+			<p>&nbsp;</p>
+		</div>
+	</div>
+  
+	<div id="info" class="d-flex flex-column p-2 d-none">	
+		<h1>Passation TKQ</h1>
+		
+		<p>Le TKQ comporte 7 subtests. Les 4 premiers subtests mesurent la connaissance du temps conventionnel&nbsp;: l'orientation (OR, 5 questions), les séquences (SEQ, 3 questions), les unités de temps (TU, 4 questions) et la lecture de l'heure (sur une horloge analogique, CLO, 5 questions).</p>
+		<ul>
+			<li>La somme des notes obtenues à ces 4 subtests permet l'établissement d'un <b>score de temps conventionnel (S1)</b>. Dans ce cas, chaque réponse est correcte ou fausse.</li>
+		</ul>
+		<p>Le cinquième subtest (AGE, temps de vie) comporte 3 questions et mesure la compréhension du <b>temps diachronique</b>.</p>
+		<p>Le sixième subtest (CYC, 4 questions) concerne les <b>anniversaires</b>.</p>
+		<p>Le septième et dernier subtest (CUR) comporte une seule question relative à la durée de la passation, c'est à dire d'une <b>durée en cours</b>.</p>
+		<ul>
+			<li>La somme des notes obtenues à ces 4 subtests permet l'établissement d'un <b>score d'estimation de temps (S2)</b>. Dans ce cas, chaque réponse est plus ou moins correcte.</li>
+		</ul>
+		
+		<h1>Cotation par subtests</h1>
+		
+		<h2>Cotation du temps conventionnel (S1)</h2>
+		
+		<p>S1 (temps conventionnel) = somme des scores maximum obtenus à chaque subtest (OR<sup>1</sup>, SEQ, TU et CLO), avec 1 point par bonne réponse, 0 pour réponse fausse.</p>
+		<p><b>Score maximum de temps conventionnel = 17</b> [score max OR (5) + score max SEQ (3) + score max TU (4) + score max CLO (5)]</p>
+		<p><sup>1</sup> Pour OR2 "quelle heure est-il&nbsp;?", 1 point est attribué si l'enfant fournit une réponse correspondant à une horaire inclus dans la même demi-journée (par exemple, l'enfant répond&nbsp;: <i>il est 10h du matin, quand il est midi</i>)</p>
+		
+		<h2>Cotation de l'estimation temporelle (S2)</h2>
+		
+		<h3>Cotation AGE</h3>
+		<p>Etablie par rapport aux réponses suivantes fournies par 20 adultes, estimées comme correctes&nbsp;:</p>
+		<ul>
+			<li>Durée moyenne entre bébé et enfant&nbsp;: 6 ans (étendue de 4 à 10 ans)</li>
+			<li>Durée moyenne entre enfant et jeune homme&nbsp;: 22 ans (étendue de 15 à 30 ans)</li>
+			<li>Durée moyenne entre jeune et viel homme&nbsp;: 35 ans (étendue de 20 à 55 ans)</li>
+		</ul>
+		<p><i>2 points sont attribués</i> si la réponse de l'enfant se situe dans l'étendue des réponses données par les adultes</p>
+		<p><i>1 point est attribué</i> si l'enfant donne une réponse dans les intervalles suivants&nbsp;:</p>
+		<ul>
+			<li>Entre bébé et enfant&nbsp;: de 2 à 15 ans</li>
+			<li>Entre enfant et jeune homme&nbsp;: de 5 à 40 ans</li>
+			<li>Entre jeune et viel homme&nbsp;: de 55  à 90 ans</li>
+		</ul>
+		<p><i>0 point est attribué</i> pour les réponses différentes ou "je ne sais pas"</p>
+		<p><b>Score maximal de AGE = 6 points</b></p>
+		
+		<h3>Cotation de CYC</h3>
+		<p>Seuls CYC1, CYC2 et CYC3 sont cotés, à partir de la date de passation et de la date de naissance de l'enfant, connue par l'expérimentateur</p>
+		<p>CYC 1&nbsp;: 0 (si erreur ou "je ne sais pas") ou 1</p>
+		<p>CYC 2 et CYC 3&nbsp;: 0 point si réponse supérieure à 12 mois ou "je ne sais pas"&nbsp;; 1 point pour erreur de plus de 3 mois&nbsp;; 2 points pour erreur de 3 à 1 mois (exclu)&nbsp;; 3 points si erreur d'un mois</p>
+		<p><b>Score maximal de CYC = 6 points</b></p>
+		
+		<h3>Cotation de CUR</h3>
+		<p>Voir annexe B, article p.9</p>
+		<p><b>Score maximal de CUR = 10 points</b></p>
+		
+		<p></p>
+		
+		<p><b>Score maximal de l'estimation temporelle = 22</b> [score max AGE (6) + score max CYC (6) + score max CUR (10)].</p>
+		<p><b>Score total maximal au TKQ = 17</b> (score max S1) + <b>22</b> (score max S2) = <b>39</b></p>
+		
+		<p></p>
+		
+		<p>Pour rapporter le score total à celui obtenu par des enfants de même niveau scolaire (<i>grade 1&nbsp;: CP&nbsp;; grade 2&nbsp;: CE1&nbsp;; grade 3&nbsp;: CE2&nbsp;; grade 4&nbsp;: CM1&nbsp;; grade 5&nbsp;: CM2</i>), se rapporter à al table de l'article (page 5).</p>
+		
+		<p></p>
+		
+	</div>
+	
+	<div id="bd" class="d-flex flex-column p-2 d-none">
+		<!-- Modal -->
+		<div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Suppression</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			  </div>
+			  <div class="modal-body">
+				Toute suppression est définitive.<br>Etes-vous sûr de vouloir continuer ? 
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-danger" onclick="removeSelectedLine()"data-bs-dismiss="modal">Oui</button>
+				<button id="CancelDelButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	
+	
+		<button type="button" class="btn btn-primary" onclick="exportToCSV()">Exporter la base de données au format CSV</button>
+		<p class="text-muted"><small>La base de donnée est enregistrée dans votre navigateur Internet, si vous effectuez une passation sur Chrome et une passation sur Firefox vous aurez deux bases de données différentes, veillez donc à utiliser toujours le même navigateur Internet pour la passation des tests. N'hésitez pas à créer une sauvegarde de la base de donnée en l'exportant régulièrement au format CSV avec le bouton ci-dessus.</small></p>
+		
+		<button id="clearBaseButton" type="button" class="btn btn-danger d-none" onclick="removeLine(-1)" data-bs-toggle="modal" data-bs-target="#delModal">Effacer toute la base</button>
+		
+		<table class="table table-sm table-striped">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col"></th><th scope="col"></th><th scope="col">Id</th><th scope="col">Code experim.</th><th scope="col">Date passation</th><th scope="col">Code enfant</th><th scope="col">Date naissance</th><th scope="col">Infos</th><th scope="col">scoreOR</th><th scope="col">scoreSEQ</th><th scope="col">scoreTU</th><th scope="col">scoreCLO</th><th scope="col">scoreAGE</th><th scope="col">scoreCYC</th><th scope="col">scoreCUR</th><th scope="col">scoreS1</th><th scope="col">scoreS2</th><th scope="col">scoreTKQ</th><th scope="col">OR1</th><th scope="col">OR1_COM</th><th scope="col">OR2</th><th scope="col">OR2_COM</th><th scope="col">OR3</th><th scope="col">OR3_COM</th><th scope="col">OR4</th><th scope="col">OR4_COM</th><th scope="col">OR5</th><th scope="col">OR5_COM</th><th scope="col">SEQ1</th><th scope="col">SEQ1_COM</th><th scope="col">SEQ2</th><th scope="col">SEQ2_COM</th><th scope="col">SEQ3</th><th scope="col">SEQ3_COM</th><th scope="col">TU1</th><th scope="col">TU1_COM</th><th scope="col">TU2</th><th scope="col">TU2_COM</th><th scope="col">TU3</th><th scope="col">TU3_COM</th><th scope="col">TU4</th><th scope="col">TU4_COM</th><th scope="col">CLO1</th><th scope="col">CLO1_COM</th><th scope="col">CLO2</th><th scope="col">CLO2_COM</th><th scope="col">CLO3</th><th scope="col">CLO3_COM</th><th scope="col">CLO4</th><th scope="col">CLO4_COM</th><th scope="col">CLO5</th><th scope="col">CLO5Why</th><th scope="col">CLO5_COM</th><th scope="col">AGE1</th><th scope="col">AGE1_COM</th><th scope="col">AGE2</th><th scope="col">AGE2_COM</th><th scope="col">AGE3</th><th scope="col">AGE3_COM</th><th scope="col">CYC2</th><th scope="col">CYC2_COM</th><th scope="col">CYC3</th><th scope="col">CYC3_COM</th><th scope="col">CYC4</th><th scope="col">CYC4_COM</th><th scope="col">Chrono</th><th scope="col">CUR</th><th scope="col">CUR_COM</th><th scope="col">Commentaires</th>
+				</tr>
+			</thead>
+			<tbody id="bdContent" >
+			</tbody>
+		</table>
+	</div>
+	
+	<footer class="footer fixed-bottom bg-dark ">
+		<div class="container">
+			<img src="./Images/LogoCESP.png" height="20">
+			~
+			<img src="./Images/logoGrhapes.png" height="8">
+			~
+			<img src="./Images/logoINSHEA.png" height="30">
+			~
+			<img src="./Images/LogoLIP6.png" height="20">
+		</div>
+	</footer>
+
+    <script src="./libs/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+	<script src="passation.js"></script>
+	<script src="./libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+	<script src="TKQ.js"></script>
+  </body>
+</html>
