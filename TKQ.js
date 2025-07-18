@@ -196,12 +196,6 @@ function disableNotTV(tv){
 	}
 }
 
-function disableTV(notTv){
-	if(notTv.checked){
-		document.getElementById("InfoCompTV").checked = false;
-	}
-}
-
 function collapseMenu(){
 	let menu = document.getElementById('mobileMenu');
 	if (window.getComputedStyle(menu).display == "block")
@@ -552,7 +546,6 @@ function savePassation(){
 			datePassation: document.getElementById("datePassation").value,
 			codeEnfant: document.getElementById("codeEnfant").value,
 			dateNaissance: document.getElementById("dateNaissance").value,
-			infoComp: document.getElementById("InfoCompTV").checked ? "SDA" : ((document.getElementById("InfoCompULIS").checked ? "ULIS" : "")+" "+(document.getElementById("InfoCompDYS").checked ? "DYS" : "")+" "+(document.getElementById("InfoCompTSA").checked ? "TSA" : "")+" "+(document.getElementById("InfoCompTDAH").checked ? "TDAH" : "")),
 			scoreOR: document.getElementById("scoreOR").innerText,
 			scoreSEQ: document.getElementById("scoreSEQ").innerText,
 			scoreTU: document.getElementById("scoreTU").innerText,
@@ -651,11 +644,6 @@ function editLine(id){
 			document.getElementById("datePassation").value = record.datePassation;
 			document.getElementById("codeEnfant").value = record.codeEnfant;
 			document.getElementById("dateNaissance").value = record.dateNaissance;
-			document.getElementById("InfoCompTV").checked = record.infoComp.includes("TV");
-			document.getElementById("InfoCompULIS").checked = record.infoComp.includes("ULIS");
-			document.getElementById("InfoCompDYS").checked = record.infoComp.includes("DYS");
-			document.getElementById("InfoCompTSA").checked = record.infoComp.includes("TSA");
-			document.getElementById("InfoCompTDAH").checked = record.infoComp.includes("TDAH");
 			document.getElementById("scoreOR").innerText = record.scoreOR;
 			document.getElementById("scoreSEQ").innerText = record.scoreSEQ;
 			document.getElementById("scoreTU").innerText = record.scoreTU;
